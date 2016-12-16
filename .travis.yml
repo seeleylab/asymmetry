@@ -14,6 +14,6 @@ install:
   - pip install -r requirements.txt
   - python setup.py develop
 script:
-  - coverage run --source=asymmetry tests/test_get_edge_weights.py
+  - coverage run --source=asymmetry -m unittest discover
 after_success:
   - coveralls
