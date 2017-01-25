@@ -4,10 +4,32 @@ import numpy as np
 import nibabel as nib
 import glob
 import numpy.testing as npt
-from asymmetry.fslx import fslxmean
+import asymmetry.get_mean_images as gmi
 
+class TestPathread(unittest.TestCase):
+    
+    test_file = os.path.join(os.path.dirname(__file__), 'fake_paths.txt')
+    
+    def setUp(self):
+        paths = ['/data5/patientNIC/1234/1234_20010101/rsfmri',
+                     '  /data5/patientNIC/5678/5678_20020202/rsfmri',
+                     '/data5/patientNIC/9101/9101_20030303/rsfmri  ']
         
-class Testfslxmean(unittest.TestCase):
+        with open(TestPathread.test_file, 'w') as fout:
+            for item in paths:
+                fout.write(item)
+                fout.write('\n')
+    
+    def tearDown(self):
+        os.remove(TestPathread.test_file)
+    
+    def test_pathread(self):
+        file_contents = gmi.pathread(TestPathread.test_file)
+        self.assertEqual(file_contents, ['/data5/patientNIC/1234/1234_20010101/rsfmri',
+                                         '/data5/patientNIC/5678/5678_20020202/rsfmri',
+                                         '/data5/patientNIC/9101/9101_20030303/rsfmri'])
+        
+class TestImgMean(unittest.TestCase):
     
     def setUp(self):
         for i in range(1,4):
@@ -25,9 +47,9 @@ class Testfslxmean(unittest.TestCase):
         for f in outputs:
             os.remove(f)
         
-    def test_fslxmean_nomask(self):
+    def test_imgmean(self):
         fake_img_list = glob.glob(os.path.join(os.path.dirname(__file__), 'fake_image*.nii'))
-        fslxmean(fake_img_list, os.path.join(os.path.dirname(__file__), 'fake_image_mean.nii'))
+        gmi.imgmean(fake_img_list, os.path.join(os.path.dirname(__file__), 'fake_image_mean.nii'))
         
         fake_image_mean = nib.load(os.path.join(os.path.dirname(__file__), 'fake_image_mean.nii')).get_data()
         fake_image1 = nib.load(os.path.join(os.path.dirname(__file__), 'fake_image1.nii')).get_data()
