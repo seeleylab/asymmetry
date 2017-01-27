@@ -1,0 +1,10 @@
+#!/bin/bash
+
+subjs=`cat /data/mridata/jdeng/tools/asymmetry/asymmetry/subjs_439.txt`
+
+for s in $subjs
+do
+fslmeants -i ${s} --label=/data/mridata/ejkim/Brainnetome/all_subregions_15mm.nii | tr -d '\n' >> /data/mridata/jdeng/tools/asymmetry/data/brainnetome_regional_wscores.txt
+echo ' ' >> /data/mridata/jdeng/tools/asymmetry/data/brainnetome_regional_wscores.txt
+echo ${s}
+done
