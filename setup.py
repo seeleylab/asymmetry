@@ -4,8 +4,11 @@ from setuptools import setup
 
 setup(
 	name='asymmetry',
-	author='Jersey Deng',
-	author_email='Jersey.Deng@ucsf.edu',
 	version='0.1',
-	packages=['asymmetry']
+	packages=['asymmetry'],
+	setup_requires=['numpy'],
+	install_requires=['numpy', 'nibabel', 'pandas'],
+	author='Jersey Deng',
+	author_email='jersey.deng@ucsf.edu',
+	description='Collection of functions and scripts used in asymmetry project'
 )
